@@ -1,6 +1,13 @@
 # Get Data ----
 metadata <- jsonlite::fromJSON("https://data.nasa.gov/data.json")
 
+# Save a local copy of the metadata so I don't have to rerun it since
+# it takes a while to download
+metadata |>
+  dplyr::as_tibble() |> 
+  # dplyr::select(starts_with("dataset"))
+  readr::write_rds(file = "./data/raw/nasa_metadata.rds")
+
 # Let's peek at the names of the different parts of the dataset
 names(metadata$dataset)
 
