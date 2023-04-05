@@ -26,8 +26,13 @@ title_word_pairs
 # These are the pairs of words that occur together most often in the
 # title fields. Some of these words are obviously acronyms used within
 # NASA, and we see how often words like "project" and "system" are used.
+
 desc_word_pairs <- nasa_desc |> 
   widyr::pairwise_count(word, id, sort = TRUE, upper = FALSE)
+
+desc_word_pairs
+# These are the pairs of words that occur together most often in the
+# description fields. "data" is a very common word in description fields
 
 # Examine word networks for these fields; this may help us see, for
 # example, which datasets are related to each other.
