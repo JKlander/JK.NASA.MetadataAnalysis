@@ -44,7 +44,7 @@ title_word_pairs |>
   ggraph::geom_edge_link(aes(edge_alpha = n, edge_width = n), edge_color = "cyan4") +
   ggraph::geom_node_point(size = 5) +
   ggraph::geom_node_text(aes(label = name), repel = TRUE, 
-                         point.padding = unit(0.2, "lines")) +
+                         point.padding = ggplot2::unit(0.2, "lines")) +
   ggplot2::theme_void()
 # There is some clear clustering of title words in this network.
 
@@ -56,8 +56,31 @@ desc_word_pairs |>
   ggraph::geom_edge_link(aes(edge_alpha = n, edge_width = n), edge_color = "darkred") +
   ggraph::geom_node_point(size = 5) +
   ggraph::geom_node_text(aes(label = name), repel = TRUE,
-                         point.padding = unit(0.2, "lines")) +
+                         point.padding = ggplot2::unit(0.2, "lines")) +
   ggplot2::theme_void()
 # Shows a strong connection between "data" and "set" and a moderately
 # strong connection with the top ~20 most frequent words, but there
 # is not clear clustering structure in the network.
+
+
+# What about the keywords?
+keyword_pairs <- nasa_keyword |> 
+  widyr::pairwise_count(keyword, id, sort = TRUE, upper = FALSE)
+
+keyword_pairs
+
+set.seed(1234)
+keyword_pairs |> 
+  dplyr::filter(n >= 600) |> 
+  igraph::graph_from_data_frame() |> 
+  ggraph::ggraph(layout = "fr") +
+  ggraph::geom_edge_link(aes(edge_alpha = n, edge_width = n), edge_color = "royalblue") +
+  ggraph::geom_node_point(size = 5) +
+  ggraph::geom_node_text(aes(label = name), repel = TRUE,
+                         point.padding = ggplot2::unit(0.2, "lines")) +
+  ggplot2::theme_void()
+# There appears to be clustering here, and strong connections between
+# keywords like "atmosphere", "earth science" and "land surface", or
+# "oceans", "earth science", and "spectral/engineering"
+# These are the most commonly co-occuring words, but also just the
+# most common keywords in general.
