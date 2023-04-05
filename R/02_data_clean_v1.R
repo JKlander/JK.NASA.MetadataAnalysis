@@ -1,6 +1,10 @@
 # Get Data ----
 metadata <- jsonlite::fromJSON("https://data.nasa.gov/data.json")
 
+# Save Data Locally ----
+metadata |> 
+  readr::write_rds(file = "./data/raw/nasa_metadata.rds")
+
 # Let's peek at the names of the different parts of the dataset
 names(metadata$dataset)
 
