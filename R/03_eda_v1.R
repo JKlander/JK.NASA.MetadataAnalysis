@@ -46,3 +46,18 @@ title_word_pairs |>
   ggraph::geom_node_text(aes(label = name), repel = TRUE, 
                          point.padding = unit(0.2, "lines")) +
   ggplot2::theme_void()
+# There is some clear clustering of title words in this network.
+
+# What about the words from the description fields?
+desc_word_pairs |> 
+  dplyr::filter(n >= 3000) |> 
+  igraph::graph_from_data_frame() |> 
+  ggraph::ggraph(layout = "fr") +
+  ggraph::geom_edge_link(aes(edge_alpha = n, edge_width = n), edge_color = "darkred") +
+  ggraph::geom_node_point(size = 5) +
+  ggraph::geom_node_text(aes(label = name), repel = TRUE,
+                         point.padding = unit(0.2, "lines")) +
+  ggplot2::theme_void()
+# Shows a strong connection between "data" and "set" and a moderately
+# strong connection with the top ~20 most frequent words, but there
+# is not clear clustering structure in the network.
