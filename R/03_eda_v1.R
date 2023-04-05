@@ -102,3 +102,16 @@ keyword_cors
 
 # Visualize the network of keyword correlations, just as we did for
 # keyword co-occurrences.
+
+set.seed(1234)
+keyword_cors |> 
+  dplyr::filter(correlation > .95 & correlation < 1.0) |> 
+  igraph::graph_from_data_frame() |> 
+  ggraph::ggraph(layout = "fr") +
+  ggraph::geom_edge_link(aes(edge_alpha = correlation,
+                             edge_width = correlation),
+                         edge_color = "royalblue") +
+  ggraph::geom_node_point(size = 5) +
+  ggraph::geom_node_text(aes(label = name), repel = TRUE,
+                         point.padding = ggplot2::unit(0.2, "lines")) +
+  ggplot2::theme_void()
