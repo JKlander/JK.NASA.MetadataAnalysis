@@ -16,3 +16,17 @@ class(metadata$dataset$keyword)       # list of character vectors
 # Let's set up separate tidy data frames for title, description and
 # keyword keeping the dataset ids for each so that we can connect
 # them later in the analysis if necessary
+nasa_title <- dplyr::tibble(id = metadata$dataset$identifier,
+                            title = metadata$dataset$title)
+nasa_title
+
+nasa_desc <- dplyr::tibble(id = metadata$dataset$identifier,
+                           desc = metadata$dataset$description)
+nasa_desc |> 
+  dplyr::select(desc) |> 
+  dplyr::sample_n(5)
+
+nasa_keyword <- dplyr::tibble(id = metadata$dataset$identifier,
+                              keyword = metadata$dataset$keyword) |> 
+  tidyr::unnest(keyword)
+  
