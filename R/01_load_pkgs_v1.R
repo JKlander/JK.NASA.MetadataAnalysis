@@ -1,3 +1,4 @@
 # Load libraries ----
-library(tidyverse)
 library(jsonlite)
+library(tidytext)
+library(tidyverse)

@@ -29,4 +29,12 @@ nasa_desc |>
 nasa_keyword <- dplyr::tibble(id = metadata$dataset$identifier,
                               keyword = metadata$dataset$keyword) |> 
   tidyr::unnest(keyword)
-  
+
+# Extract tokens and remove stop words for text analysis
+nasa_title <- nasa_title |> 
+  tidytext::unnest_tokens(output = word, input = title) |> 
+  dplyr::anti_join(tidytext::stop_words)
+
+nasa_desc <- nasa_desc |> 
+  tidytext::unnest_tokens(word, desc) |> 
+  dplyr::anti_join(tidytext::stop_words)
