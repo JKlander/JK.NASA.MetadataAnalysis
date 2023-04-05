@@ -16,7 +16,7 @@ nasa_keyword |>
   dplyr::group_by(keyword) |> 
   dplyr::count(sort = TRUE)
 
-# Word Co-Occurrences and Correlations ----
+# Word Co-Occurrences ----
 # Examine which words commonly occur together in the titles, descriptions
 # and keywords of NASA datasets.
 title_word_pairs <- nasa_title |> 
@@ -84,3 +84,21 @@ keyword_pairs |>
 # "oceans", "earth science", and "spectral/engineering"
 # These are the most commonly co-occuring words, but also just the
 # most common keywords in general.
+
+# Correlation among keywords ----
+# This looks for those keywords that are more likely to occur together
+# than with other keywords for a dataset.
+keyword_cors <- nasa_keyword |> 
+  dplyr::group_by(keyword) |> 
+  dplyr::filter(n() >= 50) |> 
+  widyr::pairwise_cor(keyword, id, sort = TRUE, upper = FALSE)
+
+keyword_cors
+# Notice that the keywords at the top of this sorted data frame have
+# correlation coefficients equal to 1; they always occur together.
+# This means these are redundant keywords. It may not make sense to
+# continue to use both of the keywords in these sets of pairs; instead
+# just one keyword could be used
+
+# Visualize the network of keyword correlations, just as we did for
+# keyword co-occurrences.
