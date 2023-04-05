@@ -36,3 +36,13 @@ desc_word_pairs
 
 # Examine word networks for these fields; this may help us see, for
 # example, which datasets are related to each other.
+set.seed(1234)
+title_word_pairs |> 
+  dplyr::filter(n >= 250) |> 
+  igraph::graph_from_data_frame() |> 
+  ggraph::ggraph(layout = "fr") +
+  ggraph::geom_edge_link(aes(edge_alpha = n, edge_width = n), edge_color = "cyan4") +
+  ggraph::geom_node_point(size = 5) +
+  ggraph::geom_node_text(aes(label = name), repel = TRUE, 
+                         point.padding = unit(0.2, "lines")) +
+  ggplot2::theme_void()
