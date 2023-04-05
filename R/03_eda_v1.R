@@ -11,3 +11,7 @@ nasa_title |>
 nasa_desc |> 
   dplyr::count(word, sort = TRUE)
 
+# What are the most common keywords?
+nasa_keyword |> 
+  dplyr::group_by(keyword) |> 
+  dplyr::count(sort = TRUE)
