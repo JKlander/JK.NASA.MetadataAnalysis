@@ -47,7 +47,8 @@ nasa_desc <- nasa_desc |>
 # like "v1" since they are not too meaningful for most audiences.
 my_stopwords <- dplyr::tibble(word = c(as.character(1:10),
                                        "v1", "v03", "12", "13", "14", "v5.2.0",
-                                       "v003", "v004", "v005", "v006", "v7"))
+                                       "v003", "v004", "v005", "v006", "v7",
+                                       "v1.0"))
 
 nasa_title <- nasa_title |> 
   dplyr::anti_join(my_stopwords)
