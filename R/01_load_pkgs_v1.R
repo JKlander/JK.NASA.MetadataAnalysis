@@ -4,6 +4,7 @@ library(igraph)
 library(jsonlite)
 library(tidytext)
 library(tidyverse)
+library(usethis)
 library(widyr)
 
 # Source other script files ----
