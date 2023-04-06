@@ -1,9 +1,10 @@
 # Get Data ----
-metadata <- jsonlite::fromJSON("https://data.nasa.gov/data.json")
+# metadata <- jsonlite::fromJSON("https://data.nasa.gov/data.json")
 
 # Save Data Locally ----
-metadata |> 
-  readr::write_rds(file = "./data/raw/nasa_metadata.rds")
+# metadata |> 
+#   readr::write_rds(file = "./data/raw/nasa_metadata.rds")
+metadata <- readr::read_rds(file = "./data/raw/nasa_metadata.rds")
 
 # Let's peek at the names of the different parts of the dataset
 names(metadata$dataset)
@@ -57,4 +58,4 @@ my_stopwords <- dplyr::tibble(word = c(as.character(1:10),
 nasa_title <- nasa_title |> 
   dplyr::anti_join(my_stopwords)
 nasa_desc <- nasa_desc |> 
-  anti_join(my_stopwords)
+  dplyr::anti_join(my_stopwords)
