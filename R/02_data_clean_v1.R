@@ -1,26 +1,25 @@
-# Get Data ----
-# metadata <- jsonlite::fromJSON("https://data.nasa.gov/data.json")
+# Get Data ---- metadata <-
+# jsonlite::fromJSON("https://data.nasa.gov/data.json")
 
-# Save Data Locally ----
-# metadata |> 
-#   readr::write_rds(file = "./data/raw/nasa_metadata.rds")
+# Save Data Locally ---- metadata |> readr::write_rds(file =
+# "./data/raw/nasa_metadata.rds")
 metadata <- readr::read_rds(file = "./data/raw/nasa_metadata.rds")
 
 # Let's peek at the names of the different parts of the dataset
 names(metadata$dataset)
 
-# Looks like there is a lot of options from who last modified the data
-# to the editor. Let's grab the title, description and keywords for each
-# dataset as a first pass for drawing connections between datasets
+# Looks like there is a lot of options from who last modified the data to the
+# editor. Let's grab the title, description and keywords for each dataset as a
+# first pass for drawing connections between datasets
 class(metadata$dataset$title)         # character vector
 class(metadata$dataset$description)   # character vector
 class(metadata$dataset$keyword)       # list of character vectors
 
 # Wrangle and tidy the data ----
 
-# Let's set up separate tidy data frames for title, description and
-# keyword keeping the dataset ids for each so that we can connect
-# them later in the analysis if necessary
+# Let's set up separate tidy data frames for title, description and keyword
+# keeping the dataset ids for each so that we can connect them later in the
+# analysis if necessary
 nasa_title <- dplyr::tibble(id = metadata$dataset$identifier,
                             title = metadata$dataset$title)
 nasa_title
@@ -44,12 +43,12 @@ nasa_desc <- nasa_desc |>
   tidytext::unnest_tokens(word, desc) |> 
   dplyr::anti_join(tidytext::stop_words)
 
-# After initial EDA it appears there are more words that don't add any
-# real useful information to the analysis, so let's create our own
-# list of stop words to strip from the title and description datasets.
+# After initial EDA it appears there are more words that don't add any real
+# useful information to the analysis, so let's create our own list of stop
+# words to strip from the title and description datasets.
 
-# Remove common words in these datasets like "data", "global" and digits
-# like "v1" since they are not too meaningful for most audiences.
+# Remove common words in these datasets like "data", "global" and digits like
+# "v1" since they are not too meaningful for most audiences.
 my_stopwords <- dplyr::tibble(word = c(as.character(1:10),
                                        "v1", "v03", "12", "13", "14", "v5.2.0",
                                        "v003", "v004", "v005", "v006", "v7",
