@@ -9,32 +9,33 @@
 metadata <- readr::read_rds(file = "./data/raw/nasa_metadata.rds")
 
 # Let's peek at the names of the different parts of the dataset
-names(metadata$dataset)
+(metadata_names <- names(metadata$dataset))
 
 # Looks like there is a lot of options from who last modified the data to the
 # editor. Let's grab the title, description and keywords for each dataset as a
 # first pass for drawing connections between datasets
-class(metadata$dataset$title)         # character vector
-class(metadata$dataset$description)   # character vector
-class(metadata$dataset$keyword)       # list of character vectors
+metadata_dataset <- metadata$dataset
+class(metadata_dataset$title)         # character vector
+class(metadata_dataset$description)   # character vector
+class(metadata_dataset$keyword)       # list of character vectors
 
 # Wrangle and tidy the data ----
 
 # Let's set up separate tidy data frames for title, description and keyword
 # keeping the dataset ids for each so that we can connect them later in the
 # analysis if necessary
-nasa_title <- dplyr::tibble(id = metadata$dataset$identifier,
-                            title = metadata$dataset$title)
+nasa_title <- dplyr::tibble(id = metadata_dataset$identifier,
+                            title = metadata_dataset$title)
 nasa_title
 
-nasa_desc <- dplyr::tibble(id = metadata$dataset$identifier,
-                           desc = metadata$dataset$description)
+nasa_desc <- dplyr::tibble(id = metadata_dataset$identifier,
+                           desc = metadata_dataset$description)
 nasa_desc |> 
   dplyr::select(desc) |> 
   dplyr::sample_n(5)
 
-nasa_keyword <- dplyr::tibble(id = metadata$dataset$identifier,
-                              keyword = metadata$dataset$keyword) |> 
+nasa_keyword <- dplyr::tibble(id = metadata_dataset$identifier,
+                              keyword = metadata_dataset$keyword) |> 
   tidyr::unnest(keyword)
 
 # Extract tokens and remove stop words for text analysis
