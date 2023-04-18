@@ -113,3 +113,11 @@ keyword_cors |>
   ggraph::geom_node_text(aes(label = name), repel = TRUE,
                          point.padding = ggplot2::unit(0.2, "lines")) +
   ggplot2::theme_void()
+# the network appears much different than the co-occurence network. The
+# difference is that the co-occurrence network asks a question about which
+# keyword pairs occur most often, and the correlation network asks a
+# question about which keyword pairs occur most often, and the correlation
+# network asks a question about which keywords occur more often together
+# than with other keywords. Notice here the high number of small clusters
+# of keywords; the network structure can be extracted (for further analysis)
+# from the graph_from_data_frame() function.
