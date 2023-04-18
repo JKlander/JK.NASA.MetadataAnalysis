@@ -145,7 +145,20 @@ desc_tf_idf <- nasa_desc |>
 desc_tf_idf |> 
   arrange(-tf_idf) |> 
   head(15) |> 
-  gt::gt()
+  gt::gt() |> 
+  gt::tab_header(
+    title = gt::md("**Description tf-idf**"),
+    subtitle = gt::md("*What are the highest tf-idf words in the NASA \ndescription fields?*")
+  ) |> 
+  gt::fmt_number(columns = c(idf, tf_idf), suffixing = TRUE) |> 
+  gt::cols_label(
+    id = gt::md("*ID*"),
+    word = gt::md("*Word*"),
+    n = gt::md("*n*"),
+    tf = gt::md("*tf*"),
+    idf = gt::md("*idf*"),
+    tf_idf = gt::md("*tf_idf*")
+  )
 # These are the most important words in the description fields as measured
 # by tf-idf, meaning they are common but not too common. Notice, we have run
 # into an issue here; both n and term frequency are equal to 1 for these
