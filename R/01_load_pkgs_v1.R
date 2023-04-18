@@ -1,5 +1,6 @@
 # Load libraries ----
 library(ggraph)
+library(gt)
 library(igraph)
 library(jsonlite)
 library(tidytext)
