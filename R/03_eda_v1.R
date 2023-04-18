@@ -121,3 +121,37 @@ keyword_cors |>
 # than with other keywords. Notice here the high number of small clusters
 # of keywords; the network structure can be extracted (for further analysis)
 # from the graph_from_data_frame() function.
+
+# Calculating tf-idf for the descripton fields
+# the network graph showed us that the description fields are dominated by
+# a few common words like "data", "global", and "resolution"; this would be
+# an excellent opportunity to use tf-idf as a statistic to find characteristic
+# words for individual description fields. You can use tf-idf, the term
+# frequency times inverse document frequency, to identify words that are
+# especially important to a document within a collection of documents. Let's
+# apply that approach to the description fields of these NASA datasets.
+
+# what is tf-idf for the description field words?
+# we will consider each description field a document, and the whole set of
+# description fields the collection or corpus of documents. We have already
+# used unnest_tokens() earlier in this chapter to make a tidy data frame
+# of the words in the description fields, so now you can use bind_tf_idf()
+# to calculate tf-idf for each word.
+desc_tf_idf <- nasa_desc |> 
+  count(id, word, sort = TRUE) |> 
+  tidytext::bind_tf_idf(word, id, n)
+
+# what are the highest tf-idf words in the NASA description fields?
+desc_tf_idf |> 
+  arrange(-tf_idf) |> 
+  head(15) |> 
+  gt::gt()
+# These are the most important words in the description fields as measured
+# by tf-idf, meaning they are common but not too common. Notice, we have run
+# into an issue here; both n and term frequency are equal to 1 for these
+# terms, meaning that these were description fields that only had a single
+# word in them. If a description field only contains one word, the tf-idf
+# algorithm will think that is a very important word.
+
+# depending on the analytic goals, it might be a good idea to throw out all 
+# description fields that have very few words.
